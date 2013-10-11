@@ -175,3 +175,27 @@ class ProductModelTest(TestCase):
         new_price = product.current_price(shop)
 
         self.assertEqual(new_price.value, new_price_value)
+
+    def test_change_current_price_to_positive_value(self):
+
+        section = Section.objects.create(name="Some section", description="")
+        shop = Shop.objects.create(name="Some shop", description="")
+        product = Product.objects.create(
+            name="Some product", description="", section=section)
+
+        old_price_value = Decimal("2.0")
+        new_price_value = Decimal("1.0")
+
+        old_price = Price.objects.create(
+            value=old_price_value, shop=shop, product=product,
+            since=timezone.now() - datetime.timedelta(days=2))
+
+        product.change_current_price(shop, new_price_value)
+
+        self.assertEqual(Price.objects.filter(
+            product=product,
+            shop=shop).count(), 2)
+
+        new_price = product.current_price(shop)
+
+        self.assertEqual(new_price.value, new_price_value)
