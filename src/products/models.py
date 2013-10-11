@@ -98,7 +98,9 @@ def positive(value):
 
 class Price(models.Model):
 
-    value = models.DecimalField(max_digits=5, decimal_places=2)
+    value = models.DecimalField(
+        max_digits=5, decimal_places=2,
+        validators=[positive])
     shop = models.ForeignKey(Shop)
     product = models.ForeignKey(Product)
     since = models.DateField(default=timezone.now)
