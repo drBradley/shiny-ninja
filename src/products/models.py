@@ -78,6 +78,13 @@ class Product(models.Model):
 
         return prices
 
+    def change_current_price(self, shop, value):
+
+        price = Price(shop=shop, product=self, value=value)
+
+        price.full_clean()
+        price.save()
+
 class Shop(models.Model):
 
     name = models.CharField(max_length=50)
