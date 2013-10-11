@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from django.test import TestCase
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from products.models import Shop, Section, Price, Product
 
@@ -199,3 +200,16 @@ class ProductModelTest(TestCase):
         new_price = product.current_price(shop)
 
         self.assertEqual(new_price.value, new_price_value)
+
+    def test_change_current_price_to_negative_value(self):
+
+        section = Section.objects.create(name="Some section", description="")
+        shop = Shop.objects.create(name="Some shop", description="")
+        product = Product.objects.create(
+            name="Some product", description="", section=section)
+
+        bad_price_value = Decimal("-1.0")
+
+        self.assertRaisesMessage(
+            ValidationError, "{'value': [u'The value must be positive']}",
+            product.change_current_price, shop, bad_price_value)
