@@ -156,3 +156,22 @@ class ProductModelTest(TestCase):
 
         self.assertPricesetEqual(
             product.min_current_price(), current)
+
+    def test_change_current_price_for_the_first_time(self):
+
+        section = Section.objects.create(name="Some section", description="")
+        shop = Shop.objects.create(name="Some shop", description="")
+        product = Product.objects.create(
+            name="Some product", description="", section=section)
+
+        old_price = product.current_price(shop)
+
+        self.assertEqual(old_price, None)
+
+        new_price_value = Decimal("1.0")
+
+        product.change_current_price(shop, new_price_value)
+
+        new_price = product.current_price(shop)
+
+        self.assertEqual(new_price.value, new_price_value)
