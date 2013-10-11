@@ -6,6 +6,7 @@ import datetime
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 class Section(models.Model):
@@ -85,6 +86,14 @@ class Shop(models.Model):
     def __unicode__(self):
 
         return self.name
+
+
+def positive(value):
+
+    if not value > 0:
+
+        raise ValidationError(
+            "The value must be positive")
 
 
 class Price(models.Model):
