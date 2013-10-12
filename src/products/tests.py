@@ -13,9 +13,18 @@ def get_id(obj):
     return obj.id
 
 
-class ProductModelTest(TestCase):
+class OurCase(TestCase):
 
-    def test_current_price_is_none_when_no_prices_exist_for_shop(self):
+    def assertPricesetEqual(self, one, two):
+
+        self.assertQuerysetEqual(
+            one, map(get_id, two),
+            transform=get_id, ordered=False)
+
+
+class ProductModelCurrentPriceTest(OurCase):
+
+    def test_is_none_when_no_prices_exist_for_shop(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -32,7 +41,7 @@ class ProductModelTest(TestCase):
 
         self.assertEqual(price, None)
 
-    def test_current_price_when_one_price_for_shop_and_product_exists(self):
+    def test_when_one_price_for_shop_and_product_exists(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -55,7 +64,7 @@ class ProductModelTest(TestCase):
 
         self.assertEqual(price.value, price_value)
 
-    def test_current_price_chooses_newest_price_not_in_future(self):
+    def test_chooses_newest_price_not_in_future(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -85,11 +94,10 @@ class ProductModelTest(TestCase):
 
         self.assertEqual(current.id, product.current_price(shop).id)
 
-    def assertPricesetEqual(self, one, two):
 
-        self.assertQuerysetEqual(one, map(get_id, two), transform=get_id, ordered=False)
+class ProductModelMinCurrentPriceTest(OurCase):
 
-    def test_min_current_price_for_product_without_price(self):
+    def test_for_product_without_price(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -104,7 +112,7 @@ class ProductModelTest(TestCase):
 
         self.assertPricesetEqual(product.min_current_price(), [])
 
-    def test_min_current_price_for_product_with_one_price(self):
+    def test_for_product_with_one_price(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -126,7 +134,7 @@ class ProductModelTest(TestCase):
 
         self.assertPricesetEqual(product.min_current_price(), [current])
 
-    def test_min_current_price_for_product_with_many_prices_in_one_shop(self):
+    def test_for_product_with_many_prices_in_one_shop(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -152,7 +160,7 @@ class ProductModelTest(TestCase):
 
         self.assertPricesetEqual(product.min_current_price(), [current])
 
-    def test_min_current_price_for_product_with_many_shops_having_one_price(self):
+    def test_for_product_with_many_shops_having_one_price(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -180,7 +188,7 @@ class ProductModelTest(TestCase):
 
         self.assertPricesetEqual(product.min_current_price(), [current])
 
-    def test_min_current_price_for_product_with_equal_prices_in_different_shops(self):
+    def test_for_product_with_equal_prices_in_different_shops(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -219,7 +227,10 @@ class ProductModelTest(TestCase):
         self.assertPricesetEqual(
             product.min_current_price(), current)
 
-    def test_change_current_price_for_the_first_time(self):
+
+class ProductModelChangeCurrentPriceTest(OurCase):
+
+    def test_for_the_first_time(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -244,7 +255,7 @@ class ProductModelTest(TestCase):
 
         self.assertEqual(new_price.value, new_price_value)
 
-    def test_change_current_price_to_positive_value(self):
+    def test_to_positive_value(self):
 
         section = Section.objects.create(
             name="Some section",
@@ -256,7 +267,6 @@ class ProductModelTest(TestCase):
             name="Some product",
             description="",
             section=section)
-
 
         old_price_value = Decimal("2.0")
         new_price_value = Decimal("1.0")
@@ -275,7 +285,7 @@ class ProductModelTest(TestCase):
 
         self.assertEqual(new_price.value, new_price_value)
 
-    def test_change_current_price_to_negative_value(self):
+    def test_to_negative_value(self):
 
         section = Section.objects.create(
             name="Some section",
