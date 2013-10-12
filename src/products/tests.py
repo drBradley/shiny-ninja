@@ -22,6 +22,134 @@ class OurCase(TestCase):
             transform=get_id, ordered=False)
 
 
+class ProductModelPriceAtTest(OurCase):
+
+    def test_is_none_when_no_prices_exist_for_shop(self):
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+        product = Product.objects.create(
+            name="Some product",
+            description="",
+            section=section)
+
+        price = product.price_at(
+            shop, timezone.now())
+
+        self.assertEqual(price, None)
+
+    def test_when_one_price_for_shop_and_product_exists(self):
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+        product = Product.objects.create(
+            name="Some product",
+            description="",
+            section=section)
+
+        price_value = Decimal("1.0")
+
+        Price.objects.create(value=price_value, shop=shop, product=product)
+
+        price = product.price_at(
+            shop, timezone.now())
+
+        self.assertEqual(type(price.value), Decimal)
+
+        self.assertEqual(price.value, price_value)
+
+    def test_with_time_varying_price(self):
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+        product = Product.objects.create(
+            name="Some product",
+            description="",
+            section=section)
+
+        price_value = Decimal("1.0")
+        now = timezone.now()
+
+        past = Price.objects.create(
+            value=price_value, shop=shop, product=product,
+            since=now - datetime.timedelta(days=2))
+
+        current = Price.objects.create(
+            value=price_value, shop=shop, product=product,
+            since=now - datetime.timedelta(days=1))
+
+        future = Price.objects.create(
+            value=price_value, shop=shop, product=product,
+            since=now + datetime.timedelta(days=1))
+
+        self.assertEqual(
+                past.id,
+                product.price_at(
+                    shop, now - datetime.timedelta(2)).id)
+
+        self.assertEqual(
+                current.id,
+                product.price_at(
+                    shop, now - datetime.timedelta(1)).id)
+
+        self.assertEqual(
+                future.id,
+                product.price_at(
+                    shop, now + datetime.timedelta(1)).id)
+
+
+    def test_with_many_products(self):
+
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+
+        apples = Product.objects.create(
+            name="Apples",
+            description="",
+            section=section)
+
+        oranges = Product.objects.create(
+            name="Oranges",
+            description="",
+            section=section)
+
+        price_value = Decimal("1.0")
+
+        now = timezone.now()
+
+        apples.change_current_price(
+            shop, price_value)
+
+        oranges.change_current_price(
+            shop, price_value)
+
+        self.assertEqual(
+            apples,
+            apples.price_at(shop, now).product)
+
+        self.assertEqual(
+            oranges,
+            oranges.price_at(shop, now).product)
+
+
 class ProductModelCurrentPriceTest(OurCase):
 
     def test_is_none_when_no_prices_exist_for_shop(self):
