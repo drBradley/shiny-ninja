@@ -53,6 +53,36 @@ class Product(models.Model):
 
         return self.price_at(shop, now)
 
+    def min_price_at(self, day):
+
+        shops = Shop.objects.filter(
+            price__product=self)
+
+        min_price_value = None
+
+        prices = []
+        for shop in shops:
+
+            price = self.price_at(shop, day)
+
+            if price is not None:
+
+                if min_price_value is None:
+
+                    min_price_value = price.value
+                    prices.append(price)
+
+                elif price.value < min_price_value:
+
+                    min_price_value = price.value
+                    prices = [price]
+
+                elif price.value == min_price_value:
+
+                    prices.append(price)
+
+        return prices
+
     def min_current_price(self):
 
         shops = Shop.objects.filter(
