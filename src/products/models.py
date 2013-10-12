@@ -13,7 +13,7 @@ class Section(models.Model):
 
     name = models.CharField(max_length=50)
     description = models.TextField()
-    
+
     def __unicode__(self):
 
         return self.name
@@ -34,21 +34,26 @@ class Product(models.Model):
 
         return self.name
 
+    def price_at(self, shop, day):
+
+        prices = Price.objects.filter(
+            product=self,
+            shop=shop,
+            since__lte=day).order_by('-since')
+
+        if prices.count() == 0:
+
+            return None
+
+        return prices[0]
+
     def current_price(self, shop):
 
         now = timezone.now()
 
-        prices = Price.objects.filter(
-            shop=shop,
-            since__lte=now).order_by('-since')
+        return self.price_at(shop, now)
 
-        if prices.count() == 0:
-            
-            return None
-
-        return prices[0]
-    
-    def min_current_price(self):
+    def min_price_at(self, day):
 
         shops = Shop.objects.filter(
             price__product=self)
@@ -58,7 +63,7 @@ class Product(models.Model):
         prices = []
         for shop in shops:
 
-            price = self.current_price(shop)
+            price = self.price_at(shop, day)
 
             if price is not None:
 
@@ -78,12 +83,18 @@ class Product(models.Model):
 
         return prices
 
+    def min_current_price(self):
+
+        return self.min_price_at(
+            timezone.now())
+
     def change_current_price(self, shop, value):
 
         price = Price(shop=shop, product=self, value=value)
 
         price.full_clean()
         price.save()
+
 
 class Shop(models.Model):
 
