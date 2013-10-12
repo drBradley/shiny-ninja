@@ -51,15 +51,7 @@ class Product(models.Model):
 
         now = timezone.now()
 
-        prices = Price.objects.filter(
-            shop=shop,
-            since__lte=now).order_by('-since')
-
-        if prices.count() == 0:
-
-            return None
-
-        return prices[0]
+        return self.price_at(shop, now)
 
     def min_current_price(self):
 
