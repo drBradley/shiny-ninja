@@ -150,6 +150,173 @@ class ProductModelPriceAtTest(OurCase):
             oranges.price_at(shop, now).product)
 
 
+class ProductModelMinPriceAtTest(OurCase):
+
+    def test_for_product_without_price(self):
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+        product = Product.objects.create(
+            name="Some product",
+            description="",
+            section=section)
+
+        self.assertPricesetEqual(
+            product.min_price_at(
+                timezone.now()),
+            [])
+
+    def test_for_product_with_one_price(self):
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+        product = Product.objects.create(
+            name="Some product",
+            description="",
+            section=section)
+
+        price_value = Decimal("1.0")
+        now = timezone.now()
+
+        current = Price.objects.create(
+            value=price_value, shop=shop, product=product,
+            since=now - datetime.timedelta(days=2))
+
+        self.assertPricesetEqual(
+            product.min_price_at(now),
+            [current])
+
+    def test_for_product_with_time_varying_price(self):
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+        product = Product.objects.create(
+            name="Some product",
+            description="",
+            section=section)
+
+        price_value = Decimal("1.0")
+        now = timezone.now()
+
+        past = Price.objects.create(
+            value=price_value, shop=shop, product=product,
+            since=now - datetime.timedelta(days=3))
+
+        current = Price.objects.create(
+            value=price_value, shop=shop, product=product,
+            since=now - datetime.timedelta(days=2))
+
+        self.assertPricesetEqual(
+                [past],
+                product.min_price_at(now - datetime.timedelta(3)))
+
+        self.assertPricesetEqual(
+                [current],
+                product.min_price_at(now - datetime.timedelta(2)))
+
+    def test_for_product_with_many_shops_having_one_price(self):
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+        other_shop = Shop.objects.create(
+            name="Some other shop",
+            description="")
+        product = Product.objects.create(
+            name="Some product",
+            description="",
+            section=section)
+
+        now = timezone.now()
+
+        current = Price.objects.create(
+            value=Decimal("1.0"), shop=shop, product=product,
+            since=now - datetime.timedelta(days=2))
+
+        Price.objects.create(
+            value=Decimal("2.0"), shop=other_shop, product=product,
+            since=now - datetime.timedelta(days=2))
+
+        self.assertPricesetEqual(
+            product.min_price_at(now),
+            [current])
+
+    def test_for_product_with_equal_prices_in_different_shops(self):
+
+        section = Section.objects.create(
+            name="Some section",
+            description="")
+        shop = Shop.objects.create(
+            name="Some shop",
+            description="")
+        other_shop = Shop.objects.create(
+            name="Some other shop",
+            description="")
+        last_shop = Shop.objects.create(
+            name="Some last shop",
+            description="")
+        product = Product.objects.create(
+            name="Some product",
+            description="",
+            section=section)
+
+        now = timezone.now()
+        before = now - datetime.timedelta(4)
+
+        past = []
+
+        Price.objects.create(
+            value=Decimal("2.0"), shop=shop, product=product,
+            since=before)
+
+        past.append(
+            Price.objects.create(
+                value=Decimal("1.0"), shop=other_shop, product=product,
+                since=before))
+
+        past.append(
+            Price.objects.create(
+                value=Decimal("1.0"), shop=last_shop, product=product,
+                since=before))
+
+        self.assertPricesetEqual(
+            product.min_price_at(before), past)
+
+        current = []
+
+        current.append(
+            Price.objects.create(
+                value=Decimal("1.0"), shop=shop, product=product,
+                since=now - datetime.timedelta(days=2)))
+
+        current.append(
+            Price.objects.create(
+                value=Decimal("1.0"), shop=other_shop, product=product,
+                since=now - datetime.timedelta(days=2)))
+
+        Price.objects.create(
+            value=Decimal("2.0"), shop=last_shop, product=product,
+            since=now - datetime.timedelta(days=2))
+
+        self.assertPricesetEqual(
+            product.min_price_at(now), current)
+
+
 class ProductModelCurrentPriceTest(OurCase):
 
     def test_is_none_when_no_prices_exist_for_shop(self):
