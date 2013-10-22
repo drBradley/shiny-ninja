@@ -89,22 +89,31 @@ class Product(models.Model):
         return self.min_price_at(
             timezone.now())
 
-    def change_current_price(self, shop, value):
+    def change_current_price(self, shop, value, currency):
 
-        price = Price(shop=shop, product=self, value=value)
+        price = Price(
+            shop=shop,
+            product=self,
+            value=value,
+            currency=currency)
 
         price.full_clean()
         price.save()
 
     def mark_unavailable(self, shop):
 
-        Price.objects.create(
-            shop=shop,
-            product=self,
-            # The value is not important when the product isn't
-            # available.
-            value=Decimal(1),
-            available=False)
+        old_price = self.current_price(shop)
+
+        if old_price:
+
+            Price.objects.create(
+                shop=shop,
+                product=self,
+                # The value is not important when the product isn't
+                # available.
+                value=Decimal(1),
+                currency=old_price.currency,
+                available=False)
 
 
 class Shop(models.Model):
