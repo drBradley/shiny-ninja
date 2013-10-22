@@ -95,6 +95,16 @@ class Product(models.Model):
         price.full_clean()
         price.save()
 
+    def mark_unavailable(self, shop):
+
+        Price.objects.create(
+            shop=shop,
+            product=self,
+            # The value is not important when the product isn't
+            # available.
+            value=Decimal(1),
+            available=False)
+
 
 class Shop(models.Model):
 
@@ -122,6 +132,15 @@ class Price(models.Model):
     shop = models.ForeignKey(Shop)
     product = models.ForeignKey(Product)
     since = models.DateField(default=timezone.now)
+    available = models.BooleanField(default=True)
+
+    def value_if_available(self):
+
+        if self.available:
+
+            return value
+
+        return None
 
     def __unicode__(self):
 
