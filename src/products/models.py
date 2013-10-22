@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 class Section(models.Model):
 
     name = models.CharField(max_length=50)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
 
@@ -22,9 +22,10 @@ class Section(models.Model):
 class Product(models.Model):
 
     name = models.CharField(max_length=50)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     section = models.ForeignKey(Section)
     photo = models.ImageField(
+        blank=True,
         null=True,
         upload_to=os.path.join(
             settings.BASE_DIR,
@@ -109,7 +110,7 @@ class Product(models.Model):
 class Shop(models.Model):
 
     name = models.CharField(max_length=50)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
 
