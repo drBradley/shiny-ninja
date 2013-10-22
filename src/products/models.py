@@ -117,6 +117,13 @@ class Shop(models.Model):
         return self.name
 
 
+class Currency(models.Model):
+
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=3, unique=True)
+    symbol = models.CharField(max_length=5)
+
+
 def positive(value):
 
     if not value > 0:
