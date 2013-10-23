@@ -9,4 +9,5 @@ urlpatterns = patterns(
     url(r'^shop/add/$', 'add_shop'),
     url(r'^shop/show/(\d+)/$', 'show_shop'),
 
-    url(r'^product/add/(\d+)/$', 'add_product'))
+    url(r'^product/add/(\d+)/$', 'add_product'),
+    url(r'^product/show/(\d+)/$', 'show_product'))

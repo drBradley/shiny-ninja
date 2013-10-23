@@ -102,3 +102,11 @@ def handle_add_product_form(request, shop_id):
         'products/product_added.html',
         {'product': product,
          'shop': shop_id})
+
+
+def show_product(request, product_id):
+
+    return render_to_response(
+        'products/show_product.html',
+        {'product': Product.objects.get(
+            id=product_id)})
