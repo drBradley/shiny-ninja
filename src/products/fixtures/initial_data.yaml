@@ -2,19 +2,19 @@
   pk: 1
   fields:
     name: Food
-    description:
+    description: ""
 
 - model: products.shop
   pk: 1
   fields:
     name: LIDL
-    description:
+    description: ""
 
 - model: products.product
   pk: 1
   fields:
     name: Ketchup
-    description:
+    description: ""
     section: 1
 
 - model: products.currency
