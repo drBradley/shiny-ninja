@@ -1,0 +1,10 @@
+<form action="" method="POST">
+    {% csrf_token %}
+    <p> Shop name: </p>
+    <p> <input type="text" name="shop_name" /> </p>
+    <p> Description of the shop:</p>
+    <p> <textarea name="shop_description"></textarea> </p>
+    <p> <input type="submit" value="Submit" /> </p>
+</form>
+
+<p> See <a href="{% url 'products.views.list_shops' %}">all the shops</a> </p>

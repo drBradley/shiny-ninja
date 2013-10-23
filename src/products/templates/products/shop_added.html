@@ -1,0 +1,9 @@
+<p> <a href="{% url 'products.views.show_shop' new_shop.id %}">{{ new_shop.name }}</a> added succesfully! </p>
+
+<p>
+
+    See <a href="{% url 'products.views.list_shops' %}">all the
+        shops</a> or <a href="{% url 'products.views.add_shop' %}">add a
+    new one</a>.
+
+</p>
