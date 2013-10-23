@@ -36,3 +36,10 @@ def handle_add_shop_form(request):
     return render_to_response(
         'products/shop_added.html',
         {'new_shop': shop})
+
+
+def list_shops(request):
+
+    return render_to_response(
+        'products/list_shops.html',
+        {'shops': Shop.objects.order_by('name')})

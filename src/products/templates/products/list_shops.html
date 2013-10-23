@@ -1,0 +1,5 @@
+{% for shop in shops %}
+<p>
+    <a href="{% url 'products.views.show_shop' shop.id}">{{ shop.name }}</a>
+</p>
+{% endfor %}
