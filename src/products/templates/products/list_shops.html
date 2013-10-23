@@ -1,5 +1,9 @@
+<p> <a href="{% url 'products.views.add_shop' %}">Add a new one</a> </p>
+
+<ul>
 {% for shop in shops %}
-<p>
-    <a href="{% url 'products.views.show_shop' shop.id}">{{ shop.name }}</a>
-</p>
+    <li>
+        <a href="{% url 'products.views.show_shop' shop.id}">{{ shop.name }}</a>
+    </li>
 {% endfor %}
+</ul>
