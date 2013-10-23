@@ -110,3 +110,10 @@ def show_product(request, product_id):
         'products/show_product.html',
         {'product': Product.objects.get(
             id=product_id)})
+
+
+def list_products(request):
+
+    return render_to_response(
+        'products/list_products.html',
+        {'products': Product.objects.order_by('name')})
