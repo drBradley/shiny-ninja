@@ -5,3 +5,9 @@
     <p> {{ shop.description }} </p>
 
 {% endif %}
+
+<p>
+  <a href="{% url 'products.views.add_product' shop.id %}">
+    Add product
+  </a>
+</p>
