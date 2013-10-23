@@ -1,0 +1,9 @@
+<p> 
+  <a href="/404">{{ product.name }}</a> added.
+</p>
+
+<p> 
+  You can <a href="{% url 'products.views.add_product' shop %}">add
+  another one</a> or <a href="{% url 'products.views.show_shop' shop
+  %}">go back to the shop</a>.
+</p>

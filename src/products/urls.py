@@ -7,6 +7,6 @@ urlpatterns = patterns(
     'products.views',
     url(r'^shop/$', 'list_shops'),
     url(r'^shop/add/$', 'add_shop'),
-    url(r'^shop/show/(\d+)/$', 'show_shop'))
+    url(r'^shop/show/(\d+)/$', 'show_shop'),
 
-
+    url(r'^product/add/(\d+)/$', 'add_product'))
