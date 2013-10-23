@@ -146,10 +146,13 @@ class Price(models.Model):
     value = models.DecimalField(
         max_digits=5, decimal_places=2,
         validators=[positive])
-    shop = models.ForeignKey(Shop)
-    product = models.ForeignKey(Product)
+    currency = models.ForeignKey(Currency)
+
     since = models.DateField(default=timezone.now)
     available = models.BooleanField(default=True)
+
+    shop = models.ForeignKey(Shop)
+    product = models.ForeignKey(Product)
 
     def value_if_available(self):
 
