@@ -43,3 +43,10 @@ def list_shops(request):
     return render_to_response(
         'products/list_shops.html',
         {'shops': Shop.objects.order_by('name')})
+
+
+def show_shop(request, shop_id):
+
+    return render_to_response(
+        'products/show_shop.html',
+        {'shop': Shop.objects.get(id=shop_id)})
