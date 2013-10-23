@@ -23,3 +23,17 @@ class Purchase(models.Model):
             self.product_price.product.name,
             self.product_price.value,
             self.date)
+
+
+class Benefit(models.Model):
+
+    purchase = models.ForeignKey(Purchase)
+    beneficiary = models.ForeignKey(User)
+
+    def __unicode__(self):
+
+        return "%s uses %s bought by %s on %s" % (
+            self.beneficiary,
+            self.purchase.product_price.product.name,
+            self.purchase.payer,
+            self.purchase.date)
