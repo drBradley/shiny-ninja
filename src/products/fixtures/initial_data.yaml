@@ -1,0 +1,25 @@
+- model: products.section
+  pk: 1
+  fields:
+    name: Food
+    description:
+
+- model: products.shop
+  pk: 1
+  fields:
+    name: LIDL
+    description:
+
+- model: products.product
+  pk: 1
+  fields:
+    name: Ketchup
+    description:
+    section: 1
+
+- model: products.currency
+  pk: 1
+  fields:
+    name: Euro
+    code: EUR
+    symbol: €
