@@ -1,3 +1,7 @@
+# FIXES
+
+* enforce authentication and authorization where necessary
+
 # Core functionality
 
 * calculating balance between users
