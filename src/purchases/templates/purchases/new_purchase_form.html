@@ -1,0 +1,30 @@
+<form action="{% url 'purchases.views.new_purchase_price' %}" method="POST">
+
+  {% csrf_token %}
+
+  <p> Product: </p>
+  <p>
+    <select name="product_id">
+      {% for product in products %}
+        <option value="{{ product.id }}">
+          {{ product.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </p>
+
+  <p> Shop: </p>
+  <p>
+    <select name="shop_id">
+      {% for shop in shops %}
+        <option value="{{ shop.id }}">
+          {{ shop.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </p>
+
+  <p> <input type="submit" value="Submit" /> </p>
+
+</form>
+     
