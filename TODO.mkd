@@ -1,0 +1,13 @@
+# Core functionality
+
+* calculating balance between users
+* paying debts off
+* buying products
+    * charging other beneficiaries
+    * changing prices
+* transaction history
+* financial summary
+
+# Extras
+
+* viewing a shop offer
