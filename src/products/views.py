@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
+from django.views.decorators.http import require_POST
 
 from products.models import Shop, Currency, Product, Section
 
@@ -117,3 +118,53 @@ def list_products(request):
     return render_to_response(
         'products/list_products.html',
         {'products': Product.objects.order_by('name')})
+
+
+def change_price(request):
+
+    if request.method == "GET":
+
+        return display_change_price_form(request)
+
+    elif request.method == "POST":
+
+        return handle_change_price_form(request)
+
+
+def display_change_price_form(request):
+
+    ctx = csrf(request)
+
+    products = Product.objects.all()
+    shops = Shop.objects.all()
+    currencies = Currency.objects.all()
+
+    ctx.update({"products": products,
+                "shops": shops,
+                "currencies": currencies})
+
+    return render_to_response(
+        'products/change_price_form.html',
+        ctx)
+
+
+def handle_change_price_form(request):
+
+    product = Product.objects.get(
+        id=request.POST['product_id'])
+
+    shop = Shop.objects.get(
+        id=request.POST['shop_id'])
+
+    currency = Currency.objects.get(
+        id=request.POST['price_currency'])
+
+    new_value = Decimal(request.POST['price_value'])
+
+    product.change_current_price(shop, new_value, currency)
+
+    price = product.current_price(shop)
+
+    return render_to_response(
+        'products/price_changed.html',
+        {'price': price})

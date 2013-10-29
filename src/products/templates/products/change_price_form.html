@@ -1,0 +1,41 @@
+<Form action="" method="POST">
+
+  {% csrf_token %}
+
+  <p> Shop: </p>
+  <p>
+    <select name="shop_id">
+      {% for shop in shops %}
+      <option value="{{ shop.id }}">
+        {{ shop.name }}
+      </option>
+      {% endfor %}
+    </select>
+  </p>
+
+  <p> Product: </p>
+  <p>
+    <select name="product_id">
+      {% for product in products %}
+      <option value="{{ product.id }}">
+        {{ product.name }}
+      </option>
+      {% endfor %}
+    </select>
+  </p>
+
+  <p> Price: </p>
+  <p> 
+    <input name="price_value" type="text" /> 
+    <select name="price_currency">
+      {% for currency in currencies %}
+      <option value="{{ currency.id }}"> 
+        {{ currency.code }}
+      </option>
+      {% endfor %}
+    </select>
+  </p>
+
+  <p> <input value="Submit" type="submit" /> </p>
+
+</form>

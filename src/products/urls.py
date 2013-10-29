@@ -11,4 +11,6 @@ urlpatterns = patterns(
 
     url(r'^product/$', 'list_products'),
     url(r'^product/add/(\d+)/$', 'add_product'),
-    url(r'^product/show/(\d+)/$', 'show_product'))
+    url(r'^product/show/(\d+)/$', 'show_product'),
+
+    url(r'^change_price/$', 'change_price'))
