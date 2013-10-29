@@ -44,3 +44,34 @@ def new_purchase_price(request):
     return render_to_response(
         'purchases/new_purchase_price_form.html',
         ctx)
+
+
+@login_required
+def handle_new_purchase(request):
+
+    product = Product.objects.get(
+        id=request.POST['product_id'])
+
+    shop = Shop.objects.get(
+        id=request.POST['shop_id'])
+
+    currency = Currency.objects.get(
+        id=request.POST['price_currency'])
+
+    value = Decimal(request.POST['price_value'])
+
+    price = product.current_price(shop)
+
+    if ((not price) or price.currency.id != currency.id or
+            price.value != value):
+
+        product.change_current_price(
+            shop, value, currency)
+
+        price = product.current_price(shop)
+
+    purchase = Purchase.objects.create(
+        product_price=price,
+        payer=request.user)
+
+    return redirect(show_purchase, purchase.id)
