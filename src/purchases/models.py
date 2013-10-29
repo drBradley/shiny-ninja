@@ -9,7 +9,10 @@ from products.models import Price
 
 class Purchase(models.Model):
 
-    number = models.PositiveIntegerField(default=1)
+    amount = models.DecimalField(
+        decimal_places=2,
+        max_digits=5,
+        default=1)
     product_price = models.ForeignKey(Price)
     payer = models.ForeignKey(User)
     date = models.DateField(
@@ -19,7 +22,7 @@ class Purchase(models.Model):
 
         return "%s bought %d %s for %s on %s" % (
             self.payer,
-            self.number,
+            self.amount,
             self.product_price.product.name,
             self.product_price.value,
             self.date)
