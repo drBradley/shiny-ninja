@@ -23,3 +23,11 @@
     name: Euro
     code: EUR
     symbol: €
+
+- model: products.price
+  pk: 1
+  fields:
+    shop: 1
+    product: 1
+    currency: 1
+    value: 3.4
