@@ -1,0 +1,26 @@
+<form action="{% url 'purchases.views.handle_new_purchase' %}" method="POST">
+
+  {% csrf_token %}
+
+  <input type="hidden" name="product_id" value="{{ product.id }}" />
+
+  <input type="hidden" name="shop_id" value="{{ shop.id }}" />
+
+  <p> What did you pay? </p>
+  <p>
+    <input type="text" name="price_value" value="{{ price.value }}" />
+    <select name="price_currency">
+      {% for currency in currencies %}
+      <option value="{{ currency.id }}"
+              {% if price and price.currency.id == currency.id %}
+              selected="selected"
+              {% endif %}
+              >
+        {{ currency.code }}
+      </option>
+      {% endfor %}
+    </select>
+  </p>
+
+  <p> <input type="submit" value="Submit" /> </p>
+</form>
