@@ -4,7 +4,6 @@ from decimal import Decimal
 
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
-from django.views.decorators.http import require_POST
 
 from products.models import Shop, Currency, Product, Section
 
