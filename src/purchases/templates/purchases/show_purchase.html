@@ -11,9 +11,9 @@
   {% endfor %}
 </ul>
 
-<form action="/404" method="POST">
+<form action="{% url 'purchases.views.add_beneficiary' purchase.id %}" method="POST">
 
-  <!-- url 'purchases.views.add_beneficiary' -->
+  {% csrf_token %}
 
   <p> Beneficiary: </p>
   <p>

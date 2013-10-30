@@ -95,3 +95,26 @@ def show_purchase(request, purchase_id):
     return render_to_response(
         'purchases/show_purchase.html',
         ctx)
+
+
+def add_beneficiary(request, purchase_id):
+
+    purchase = Purchase.objects.get(
+        id=purchase_id)
+
+    if not request.user.id == purchase.payer.id:
+
+        response = render_to_response(
+            'purchases/not_payer.html',
+            {'purchase_id': purchase_id})
+
+        response.status_code = 401
+
+        return response
+
+    user = User.objects.get(
+        id=request.POST['beneficiary_id'])
+
+    purchase.add_benefit(user)
+
+    return redirect(show_purchase, purchase_id)
