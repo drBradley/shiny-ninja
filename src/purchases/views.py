@@ -83,12 +83,15 @@ def handle_new_purchase(request):
 
 def show_purchase(request, purchase_id):
 
-    purchase = Purchase.objects.get(
+    ctx = csrf(request)
+
+    ctx['purchase'] = Purchase.objects.get(
         id=purchase_id)
 
-    users = User.objects.all()
+    ctx['users'] = User.objects.all()
+
+    ctx['benefits'] = ctx['purchase'].benefits()
 
     return render_to_response(
         'purchases/show_purchase.html',
-        {'purchase': purchase,
-         'users': users})
+        ctx)
