@@ -58,7 +58,10 @@ def handle_new_purchase(request):
     currency = Currency.objects.get(
         id=request.POST['price_currency'])
 
-    value = Decimal(request.POST['price_value'])
+    # Qucik and dirty fix to accept commas in place of periods.
+    value = Decimal(
+        request.POST['price_value'].replace(
+            ',', '.'))
 
     price = product.current_price(shop)
 
