@@ -4,3 +4,30 @@
   bought on {{ purchase.date }} at {{ purchase.product_price.shop.name }}
   by {{ purchase.payer.username }}.
 </p>
+
+<ul>
+  {% for benefit in benefits %}
+  <li> {{ benefit.beneficiary.name }} uses {{ benefit.amount }} out of {{ purchase.amount }} </li>
+  {% endfor %}
+</ul>
+
+<form action="/404" method="POST">
+
+  <!-- url 'purchases.views.add_beneficiary' -->
+
+  <p> Beneficiary: </p>
+  <p>
+    <select name="beneficiary_id">
+      {% for user in users %}
+      <option value="{{ user.id }}">
+        {{ user.username }}
+      </option>
+      {% endfor %}
+    </select>
+  </p>
+
+  <p>
+    <input type="submit" value="Add beneficiary" />
+  </p>
+
+</form>

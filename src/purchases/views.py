@@ -5,6 +5,7 @@ from decimal import Decimal
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from products.models import Product, Shop, Price, Currency
 
@@ -85,6 +86,9 @@ def show_purchase(request, purchase_id):
     purchase = Purchase.objects.get(
         id=purchase_id)
 
+    users = User.objects.all()
+
     return render_to_response(
         'purchases/show_purchase.html',
-        {'purchase': purchase})
+        {'purchase': purchase,
+         'users': users})
