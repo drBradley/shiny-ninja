@@ -31,7 +31,13 @@ class Purchase(models.Model):
         return Benefit.objects.filter(
             purchase=self)
 
+    def add_benefit(self, who):
 
+        Benefit.objects.create(
+            purchase=self,
+            beneficiary=who)
+
+    
 class Benefit(models.Model):
 
     purchase = models.ForeignKey(Purchase)
