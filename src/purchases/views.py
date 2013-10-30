@@ -75,3 +75,13 @@ def handle_new_purchase(request):
         payer=request.user)
 
     return redirect(show_purchase, purchase.id)
+
+
+def show_purchase(request, purchase_id):
+
+    purchase = Purchase.objects.get(
+        id=purchase_id)
+
+    return render_to_response(
+        'purchases/show_purchase.html',
+        {'purchase': purchase})
