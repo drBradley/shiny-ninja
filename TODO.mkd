@@ -4,13 +4,13 @@
 
 # Core functionality
 
-* calculating balance between users
-* paying debts off
 * buying products
-    * charging other beneficiaries
     * changing prices
-* transaction history
-* financial summary
+    * *charging other beneficiaries*
+* *calculating balance between users*
+* *paying debts off*
+* *transaction history*
+* *financial summary*
 
 # Extras
 
