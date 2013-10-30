@@ -6,7 +6,7 @@
 
 * buying products
     * changing prices
-    * *charging other beneficiaries*
+    * charging other beneficiaries
 * *calculating balance between users*
 * *paying debts off*
 * *transaction history*
