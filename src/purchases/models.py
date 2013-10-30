@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -26,6 +25,11 @@ class Purchase(models.Model):
             self.product_price.product.name,
             self.product_price.value,
             self.date)
+
+    def benefits(self):
+
+        return Benefit.objects.filter(
+            purchase=self)
 
 
 class Benefit(models.Model):
