@@ -15,3 +15,4 @@
 # Extras
 
 * viewing a shop offer
+* amounts in benefits
