@@ -115,6 +115,8 @@ def add_beneficiary(request, purchase_id):
     user = User.objects.get(
         id=request.POST['beneficiary_id'])
 
-    purchase.add_benefit(user)
+    share = request.POST['share']
+
+    purchase.add_benefit(user, share)
 
     return redirect(show_purchase, purchase_id)
