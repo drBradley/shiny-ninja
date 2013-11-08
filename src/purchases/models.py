@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-from products.models import Price
+from products.models import Price, Currency
 
 
 class Purchase(models.Model):
@@ -56,6 +56,8 @@ class Benefit(models.Model):
 
 class Balance(models.Model):
 
+    currency = models.ForeignKey(Currency)
+
     first_user = models.ForeignKey(User)
     second_user = models.ForeignKey(User)
 
@@ -74,7 +76,7 @@ class Balance(models.Model):
                     second_user=user.exclude(first_user=user)))
 
     @classmethod
-    def balance_between(cls, one, another):
+    def balance_between(cls, one, another, currency):
 
         if one.id > another.id:
 
@@ -82,12 +84,15 @@ class Balance(models.Model):
 
         if cls.objects.filter(
                 first_user=one,
-                second_user=another).count() == 1:
+                second_user=another,
+                currency=currency).count() == 1:
 
             return cls.objects.get(
                 first_user=one,
-                second_user=another)
+                second_user=another,
+                currency=currency)
 
         return cls.objects.create(
             first_user=one,
-            second_user=another)
+            second_user=another,
+            currency=currency)
