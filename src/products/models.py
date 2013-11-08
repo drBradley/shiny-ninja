@@ -152,7 +152,7 @@ class Price(models.Model):
         validators=[positive])
     currency = models.ForeignKey(Currency)
 
-    since = models.DateField(default=timezone.now)
+    since = models.DateTimeField(default=timezone.now)
     available = models.BooleanField(default=True)
 
     shop = models.ForeignKey(Shop)
