@@ -143,6 +143,23 @@ class Balance(models.Model):
         self.save()
 
     @classmethod
+    def affected_by(cls, purchase):
+
+        affected = []
+
+        for benefit in purchase.benefit_set:
+
+            affected.append(
+                (Balance.balance_between(
+                    benefit.beneficiary,
+                    purchase.payer,
+                    purchase.price.currency),
+                 benefit))
+
+        return affected
+
+
+    @classmethod
     def balances_of(cls, user):
 
         return (cls.objects.filter(
