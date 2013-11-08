@@ -1,0 +1,75 @@
+- fields:
+    date_joined: 2013-10-30 14:45:02.981702+00:00
+    email: ''
+    first_name: ''
+    groups: []
+    is_active: true
+    is_staff: true
+    is_superuser: true
+    last_login: 2013-10-30 14:45:28.686095+00:00
+    last_name: ''
+    password: pbkdf2_sha256$10000$uucull41xMnY$Rst20yjA9BKhJdAx9INmS7MMSbk5A62orsZtg9JUP4s=
+    user_permissions: []
+    username: karol
+  model: auth.user
+  pk: 1
+- fields:
+    date_joined: 2013-11-08 10:15:49.832870+00:00
+    email: ''
+    first_name: ''
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2013-11-08 10:15:49.832808+00:00
+    last_name: ''
+    password: pbkdf2_sha256$10000$Nc4be9tJOJ1R$0SKBfdLZSlmIpO/8YzFCP88thzzYUJO3ApO1P0G4EXY=
+    user_permissions: []
+    username: natsu
+  model: auth.user
+  pk: 2
+- fields:
+    date_joined: 2013-11-08 10:16:02.817824+00:00
+    email: ''
+    first_name: ''
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2013-11-08 10:16:02.817760+00:00
+    last_name: ''
+    password: pbkdf2_sha256$10000$ZRCQUc34mVT6$cbRGS3n8g5iX8gmt9bW+hB+0wYrwSWW86dSUZ/txWy0=
+    user_permissions: []
+    username: grey
+  model: auth.user
+  pk: 3
+- fields:
+    date_joined: 2013-11-08 10:16:12.701156+00:00
+    email: ''
+    first_name: ''
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2013-11-08 10:16:12.701091+00:00
+    last_name: ''
+    password: pbkdf2_sha256$10000$EVMVrJk9KKtG$EZuN7ShAhWRdB4NS3rZVinhCNdsLY6TdbLd0TFQ18gE=
+    user_permissions: []
+    username: erza
+  model: auth.user
+  pk: 4
+- fields:
+    date_joined: 2013-11-08 10:16:36.707537+00:00
+    email: ''
+    first_name: ''
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2013-11-08 10:16:36.707476+00:00
+    last_name: ''
+    password: pbkdf2_sha256$10000$qSZkpEpWWi53$ZFjfKl779AwdnRodAHYeaJ+oaZee86pY38th4kEbts0=
+    user_permissions: []
+    username: happy
+  model: auth.user
+  pk: 5
