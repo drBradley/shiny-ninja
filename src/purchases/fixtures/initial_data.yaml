@@ -1,0 +1,22 @@
+- model: purchases.purchase
+  pk: 1
+  fields:
+    amount: 1.2
+    product_price: 1
+    payer: 4
+    date: 2013-11-08 11:20:14.749302+00:00
+- model: purchases.benefit
+  pk: 1
+  fields:
+    purchase: 1
+    beneficiary: 3
+- model: purchases.benefit
+  pk: 2
+  fields:
+    purchase: 1
+    beneficiary: 5
+- model: purchases.benefit
+  pk: 3
+  fields:
+    purchase: 1
+    beneficiary: 2
