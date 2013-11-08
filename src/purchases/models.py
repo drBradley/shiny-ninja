@@ -38,8 +38,8 @@ class Purchase(models.Model):
             beneficiary=who)
 
         balance = Balance.balance_between(
-            purchase.payer,
-            who, purchase.product_price.currency)
+            self.payer,
+            who, self.product_price.currency)
 
         billing = self.amount * self.product_price.value
 
@@ -55,6 +55,8 @@ class Purchase(models.Model):
         else:
 
             balance.second_owes_first += billing
+
+        balance.save()
 
     
 class Benefit(models.Model):
@@ -77,8 +79,11 @@ class Balance(models.Model):
 
     currency = models.ForeignKey(Currency)
 
-    first_user = models.ForeignKey(User)
-    second_user = models.ForeignKey(User)
+    first_user = models.ForeignKey(
+        User, related_name='balances_where_first')
+
+    second_user = models.ForeignKey(
+        User, related_name='balances_where_second')
 
     first_owes_second = models.DecimalField(
         default=0, max_digits=5, decimal_places=2)
