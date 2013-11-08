@@ -52,3 +52,42 @@ class Benefit(models.Model):
                     self.purchase.product_price.product.name,
                     self.purchase.payer,
                     self.purchase.date))
+
+
+class Balance(models.Model):
+
+    first_user = models.ForeignKey(User)
+    second_user = models.ForeignKey(User)
+
+    first_owes_second = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2)
+
+    second_owes_first = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2)
+
+    @classmethod
+    def balances_of(cls, user):
+
+        return (cls.objects.filter(
+            first_user=user) +
+                cls.objetcs.filter(
+                    second_user=user.exclude(first_user=user)))
+
+    @classmethod
+    def balance_between(cls, one, another):
+
+        if one.id > another.id:
+
+            one, another = another, one
+
+        if cls.objects.filter(
+                first_user=one,
+                second_user=another).count() == 1:
+
+            return cls.objects.get(
+                first_user=one,
+                second_user=another)
+
+        return cls.objects.create(
+            first_user=one,
+            second_user=another)
