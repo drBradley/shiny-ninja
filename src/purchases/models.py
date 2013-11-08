@@ -31,34 +31,40 @@ class Purchase(models.Model):
         return Benefit.objects.filter(
             purchase=self)
 
-    def add_benefit(self, who):
+    def add_benefit(self, who, how_much):
 
-        Benefit.objects.create(
+        old_share_sum = Benefit.objects.filter(
+            purchase=self).aggregate(models.Sum('share'))
+
+        new_benefit = Benefit.objects.create(
             purchase=self,
-            beneficiary=who)
+            beneficiary=who,
+            share=how_much)
 
-        balance = Balance.balance_between(
-            self.payer,
-            who, self.product_price.currency)
+        share_sum = Benefit.objects.filter(
+            purchase=self).aggregate(models.Sum('share'))
 
-        billing = self.amount * self.product_price.value
+        for balance, benefit in Balance.affected_by(self):
 
-        # When Erza buys a new armor for Erza, it's the first Erza
-        # that owes money the second one.
-        #
-        # (This is how we represent a user buying stuff for
-        # themselves.)
-        if balance.first_user == who:
+            if (benefit.beneficiary != who
+                and benefit.beneficiary.id != who):
 
-            balance.first_owes_second += billing
+                balance.charge(
+                    benefit.beneficiary,
+                    - self.amount * self.product_price.value *
+                    benefit.share / old_share_sum)
 
-        else:
+                balance.charge(
+                    benefit.beneficiary,
+                    self.amount * self.product_price.value *
+                    benefit.share / share_sum)
 
-            balance.second_owes_first += billing
+        Balance.balance_between(self.payer, who).balance.charge(
+            who,
+            self.amount * self.product_price.value * new_benefit.share
+            / share_sum)
 
-        balance.save()
 
-    
 class Benefit(models.Model):
 
     purchase = models.ForeignKey(Purchase)
