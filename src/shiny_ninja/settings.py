@@ -27,6 +27,11 @@ DATABASES = {
     }
 }
 
+# Where to load fixtures from, besides the typical locations
+FIXTURE_DIRS = (
+    os.path.join(SRC_DIR, 'shiny_ninja/fixtures/'),
+)
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
