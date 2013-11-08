@@ -42,11 +42,13 @@ class Benefit(models.Model):
 
     purchase = models.ForeignKey(Purchase)
     beneficiary = models.ForeignKey(User)
+    paid_off = models.BooleanField(default=False)
 
     def __unicode__(self):
 
-        return "%s uses %s bought by %s on %s" % (
-            self.beneficiary,
-            self.purchase.product_price.product.name,
-            self.purchase.payer,
-            self.purchase.date)
+        return (('*unpaid* ' if not self.paid_off else '') +
+                "%s uses %s bought by %s on %s" % (
+                    self.beneficiary,
+                    self.purchase.product_price.product.name,
+                    self.purchase.payer,
+                    self.purchase.date))

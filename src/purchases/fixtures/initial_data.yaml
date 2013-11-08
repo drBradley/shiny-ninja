@@ -10,13 +10,16 @@
   fields:
     purchase: 1
     beneficiary: 3
+    paid_off: no
 - model: purchases.benefit
   pk: 2
   fields:
     purchase: 1
     beneficiary: 5
+    paid_off: no
 - model: purchases.benefit
   pk: 3
   fields:
     purchase: 1
     beneficiary: 2
+    paid_off: no
