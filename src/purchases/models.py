@@ -69,6 +69,10 @@ class Benefit(models.Model):
 
     purchase = models.ForeignKey(Purchase)
     beneficiary = models.ForeignKey(User)
+
+    share = models.DecimalField(
+        default=1, max_digits=5, decimal_places=2)
+
     paid_off = models.BooleanField(default=False)
 
     def __unicode__(self):
