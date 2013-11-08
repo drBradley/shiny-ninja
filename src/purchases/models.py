@@ -114,6 +114,24 @@ class Balance(models.Model):
             self.second_user.username,
             self.currency)
 
+    def charge(self, who, how_much):
+
+        if not (self.first_user == who or self.first_user.id == who or
+                self.second_user == who or self.second_user.id == who):
+
+            raise ValueError(
+                "The user must be one linked to this balance")
+
+        if self.first_user == who or self.first_user.id == who:
+
+            self.first_owes_second += how_much
+
+        elif self.second_user == who or self.second_user.id == who:
+
+            self.second_owes_first += how_much
+
+        self.save()
+
     @classmethod
     def balances_of(cls, user):
 
