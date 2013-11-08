@@ -91,6 +91,29 @@ class Balance(models.Model):
     second_owes_first = models.DecimalField(
         default=0, max_digits=5, decimal_places=2)
 
+    def __unicode__(self):
+
+        if self.first_owes_second > self.second_owes_first:
+
+            return '%s owes %s %.2f %s' % (
+                self.first_user.username,
+                self.second_user.username,
+                self.first_owes_second - self.second_owes_first,
+                self.currency)
+
+        elif self.second_owes_first > self.first_owes_second:
+
+            return '%s owes %s %.2f %s' % (
+                self.second_user.username,
+                self.first_user.username,
+                self.second_owes_first - self.first_owes_second,
+                self.currency)
+
+        return '%s and %s are even (%s)' % (
+            self.first_user.username,
+            self.second_user.username,
+            self.currency)
+
     @classmethod
     def balances_of(cls, user):
 
