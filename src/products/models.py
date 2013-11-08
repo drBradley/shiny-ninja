@@ -132,6 +132,10 @@ class Currency(models.Model):
     code = models.CharField(max_length=3, unique=True)
     symbol = models.CharField(max_length=5)
 
+    def __unicode__(self):
+
+        return self.code
+
 
 def positive(value):
 
