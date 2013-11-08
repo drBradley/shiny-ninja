@@ -37,6 +37,25 @@ class Purchase(models.Model):
             purchase=self,
             beneficiary=who)
 
+        balance = Balance.balance_between(
+            purchase.payer,
+            who, purchase.product_price.currency)
+
+        billing = self.amount * self.product_price.value
+
+        # When Erza buys a new armor for Erza, it's the first Erza
+        # that owes money the second one.
+        #
+        # (This is how we represent a user buying stuff for
+        # themselves.)
+        if balance.first_user == who:
+
+            balance.first_owes_second += billing
+
+        else:
+
+            balance.second_owes_first += billing
+
     
 class Benefit(models.Model):
 
