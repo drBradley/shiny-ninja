@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from decimal import Decimal
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -34,15 +36,15 @@ class Purchase(models.Model):
     def add_benefit(self, who, how_much):
 
         old_share_sum = Benefit.objects.filter(
-            purchase=self).aggregate(models.Sum('share'))
+            purchase=self).aggregate(models.Sum('share'))['share__sum']
 
         new_benefit = Benefit.objects.create(
             purchase=self,
             beneficiary=who,
-            share=how_much)
+            share=Decimal(how_much))
 
         share_sum = Benefit.objects.filter(
-            purchase=self).aggregate(models.Sum('share'))
+            purchase=self).aggregate(models.Sum('share'))['share__sum']
 
         for balance, benefit in Balance.affected_by(self):
 
@@ -59,10 +61,14 @@ class Purchase(models.Model):
                     self.amount * self.product_price.value *
                     benefit.share / share_sum)
 
-        Balance.balance_between(self.payer, who).balance.charge(
+        Balance.balance_between(
+            self.payer,
             who,
-            self.amount * self.product_price.value * new_benefit.share
-            / share_sum)
+            self.product_price.currency,
+        ).charge(
+            who,
+            self.amount * self.product_price.value *
+            new_benefit.share / share_sum)
 
 
 class Benefit(models.Model):
@@ -147,13 +153,13 @@ class Balance(models.Model):
 
         affected = []
 
-        for benefit in purchase.benefit_set:
+        for benefit in Benefit.objects.filter(purchase=purchase):
 
             affected.append(
                 (Balance.balance_between(
                     benefit.beneficiary,
                     purchase.payer,
-                    purchase.price.currency),
+                    purchase.product_price.currency),
                  benefit))
 
         return affected
