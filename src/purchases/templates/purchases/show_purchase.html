@@ -9,7 +9,7 @@
   {% for benefit in benefits %}
   <li>
     {{ benefit.beneficiary.username }} uses
-    {{ benefit.template_share }} out of
+    {{ benefit.template_share | floatformat:2 }} out of
     {{ purchase.amount }}
   </li>
   {% endfor %}
