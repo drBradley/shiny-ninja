@@ -3,13 +3,14 @@
 from decimal import Decimal
 
 from django.core.context_processors import csrf
+from django.db.models import Sum
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from products.models import Product, Shop, Price, Currency
 
-from purchases.models import Purchase
+from purchases.models import Purchase, Benefit
 
 
 @login_required
@@ -85,12 +86,20 @@ def show_purchase(request, purchase_id):
 
     ctx = csrf(request)
 
-    ctx['purchase'] = Purchase.objects.get(
+    purchase = ctx['purchase'] = Purchase.objects.get(
         id=purchase_id)
 
     ctx['users'] = User.objects.all()
 
     ctx['benefits'] = ctx['purchase'].benefits()
+
+    share_sum = Benefit.objects.filter(
+        purchase=purchase).aggregate(Sum('share'))['share__sum']
+
+    for benefit in ctx['benefits']:
+
+        benefit.__dict__['template_share'] = (
+            benefit.share * purchase.amount / share_sum)
 
     return render_to_response(
         'purchases/show_purchase.html',
