@@ -53,13 +53,11 @@ class Purchase(models.Model):
 
                 balance.charge(
                     benefit.beneficiary,
-                    - self.amount * self.product_price.value *
-                    benefit.share / old_share_sum)
 
-                balance.charge(
-                    benefit.beneficiary,
                     self.amount * self.product_price.value *
-                    benefit.share / share_sum)
+                    benefit.share / share_sum -
+                    self.amount * self.product_price.value *
+                    benefit.share / old_share_sum)
 
         Balance.balance_between(
             self.payer,
@@ -106,6 +104,14 @@ class Balance(models.Model):
 
     second_owes_first = models.DecimalField(
         default=0, max_digits=5, decimal_places=2)
+
+    def balance_of_first(self):
+
+        return self.second_owes_first - self.first_owes_second
+
+    def balance_of_second(self):
+
+        return - self.balance_of_first()
 
     def __unicode__(self):
 

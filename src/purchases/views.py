@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 from products.models import Product, Shop, Price, Currency
 
-from purchases.models import Purchase, Benefit
+from purchases.models import Purchase, Benefit, Balance
 
 
 @login_required
@@ -129,3 +129,28 @@ def add_beneficiary(request, purchase_id):
     purchase.add_benefit(user, share)
 
     return redirect(show_purchase, purchase_id)
+
+
+@login_required
+def show_balances(request):
+
+    ctx = {}
+
+    user = ctx['me'] = request.user
+
+    own_balances = ctx['own_balances'] = (Balance.objects.
+        filter(first_user=user, second_user=user))
+
+    balances_me_first = ctx['balances_me_first'] = (Balance.objects.
+        filter(first_user=user).
+        exclude(second_user=user).
+        order_by('second_user'))
+
+    balances_me_second = ctx['balances_me_second'] = (Balance.objects.
+        filter(second_user=user).
+        exclude(first_user=user).
+        order_by('first_user'))
+
+    return render_to_response(
+        'purchases/my_balance.html',
+        ctx)

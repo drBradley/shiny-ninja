@@ -1,0 +1,50 @@
+<h1> Your balance </h1>
+
+{% if own_balances %}
+<p> You've spent: <p>
+
+<ul>
+  {% for balance in own_balances %}
+  <li>
+  {{ balance.first_owes_second }} {{ balance.currency }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p> I see you run on a shoestring budget. Keep that up! </p>
+{% endif %}
+
+{% if not balances_me_first and not balances_me_second %}
+<p>
+  You haven't benefited from anybody else's purchases. Have you no
+  friends?
+</p>
+{% else %}
+<table>
+  <tr>
+    <td> With </td>
+    <td> You owe them </td>
+    <td> They owe you </td>
+    <td> Balance </td>
+    <td> Currency </td>
+  </tr>
+  {% for balance in balances_me_first %}
+  <tr>
+    <td> {{ balance.second_user.username }} </td>
+    <td> {{ balance.first_owes_second }} </td>
+    <td> {{ balance.second_owes_first }} </td>
+    <td> {{ balance.balance_of_first }} </td>
+    <td> {{ balance.currency }} </td>
+  </tr>
+  {% endfor %}
+  {% for balance in balances_me_second %}
+  <tr>
+    <td> {{ balance.first_user.username }} </td>
+    <td> {{ balance.second_owes_first }} </td>
+    <td> {{ balance.first_owes_second }} </td>
+    <td> {{ balance.balance_of_second }} </td>
+    <td> {{ balance.currency }} </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}

@@ -17,6 +17,13 @@
     description: ""
     section: 1
 
+- model: products.product
+  pk: 2
+  fields:
+    name: Nuggat pillows
+    description: ""
+    section: 1
+
 - model: products.currency
   pk: 1
   fields:
@@ -31,3 +38,11 @@
     product: 1
     currency: 1
     value: 3.4
+
+- model: products.price
+  pk: 2
+  fields:
+    shop: 1
+    product: 2
+    currency: 1
+    value: 8
