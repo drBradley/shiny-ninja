@@ -39,7 +39,7 @@ class Purchase(models.Model):
         if self.no_debt_paid_off:
 
             old_share_sum = Benefit.objects.filter(
-            purchase=self).aggregate(models.Sum('share'))['share__sum']
+                purchase=self).aggregate(models.Sum('share'))['share__sum']
 
             new_benefit = Benefit.objects.create(
             purchase=self,
@@ -47,7 +47,7 @@ class Purchase(models.Model):
             share=Decimal(how_much))
 
             share_sum = Benefit.objects.filter(
-            purchase=self).aggregate(models.Sum('share'))['share__sum']
+                purchase=self).aggregate(models.Sum('share'))['share__sum']
 
             for balance, benefit in Balance.affected_by(self):
 
