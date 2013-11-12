@@ -181,3 +181,17 @@ def show_debts(request, obligor_id):
     return render_to_response(
         "purchases/debts.html",
         ctx)
+
+
+def settle_debts(request, obligor_id):
+
+    obligor = User.objects.get(id=obligor_id)
+
+    settled_debts = Benefit.objects.filter(
+        id__in=request.POST.getlist('settled'))
+
+    for benefit in settled_debts:
+
+        benefit.purchase.settle_debt(benefit)
+
+    return redirect(debts, obligor_id)
