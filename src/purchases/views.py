@@ -165,3 +165,19 @@ def debts(request, obligor_id):
     elif request.method == 'POST':
 
         return settle_debts(request, obligor_id)
+
+
+def show_debts(request, obligor_id):
+
+    ctx = csrf(request)
+
+    obligor = ctx["obligor"] = User.objects.get(id=obligor_id)
+
+    benefits = ctx["benefits"] = Benefit.objects.filter(
+        purchase__payer=request.user,
+        beneficiary=obligor,
+        paid_off=False)
+
+    return render_to_response(
+        "purchases/debts.html",
+        ctx)
