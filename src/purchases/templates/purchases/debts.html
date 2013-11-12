@@ -1,0 +1,15 @@
+<h1> {{ obligor.username }}'s debts to you </h1>
+
+<form action="" method="POST">
+
+  {% csrf_token %}
+
+{% for benefit in benefits %}
+  <p>
+    <input type="checkbox" name="settled" value="{{ benefit.id }}" />
+    {{ benefit }}
+  </p>
+{% endfor %}
+
+  <p> <input type="submit" value="Settle debts" /> </p>
+</form>
