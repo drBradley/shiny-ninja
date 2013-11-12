@@ -154,3 +154,14 @@ def show_balances(request):
     return render_to_response(
         'purchases/my_balance.html',
         ctx)
+
+@login_required
+def debts(request, obligor_id):
+
+    if request.method == 'GET':
+
+        return show_debts(request, obligor_id)
+
+    elif request.method == 'POST':
+
+        return settle_debts(request, obligor_id)
