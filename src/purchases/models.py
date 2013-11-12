@@ -18,6 +18,7 @@ class Purchase(models.Model):
     payer = models.ForeignKey(User)
     date = models.DateField(
         default=timezone.now)
+    no_debt_paid_off = models.BooleanField(default=True)
 
     def __unicode__(self):
 
@@ -35,38 +36,40 @@ class Purchase(models.Model):
 
     def add_benefit(self, who, how_much):
 
-        old_share_sum = Benefit.objects.filter(
+        if self.no_debt_paid_off:
+
+            old_share_sum = Benefit.objects.filter(
             purchase=self).aggregate(models.Sum('share'))['share__sum']
 
-        new_benefit = Benefit.objects.create(
+            new_benefit = Benefit.objects.create(
             purchase=self,
             beneficiary=who,
             share=Decimal(how_much))
 
-        share_sum = Benefit.objects.filter(
+            share_sum = Benefit.objects.filter(
             purchase=self).aggregate(models.Sum('share'))['share__sum']
 
-        for balance, benefit in Balance.affected_by(self):
+            for balance, benefit in Balance.affected_by(self):
 
-            if (benefit.beneficiary != who
+                if (benefit.beneficiary != who
                 and benefit.beneficiary.id != who):
 
-                balance.charge(
+                    balance.charge(
                     benefit.beneficiary,
 
-                    self.amount * self.product_price.value *
-                    benefit.share / share_sum -
-                    self.amount * self.product_price.value *
-                    benefit.share / old_share_sum)
+                        self.amount * self.product_price.value *
+                        benefit.share / share_sum -
+                        self.amount * self.product_price.value *
+                        benefit.share / old_share_sum)
 
-        Balance.balance_between(
-            self.payer,
-            who,
-            self.product_price.currency,
-        ).charge(
-            who,
-            self.amount * self.product_price.value *
-            new_benefit.share / share_sum)
+            Balance.balance_between(
+                self.payer,
+                who,
+                self.product_price.currency,
+            ).charge(
+                who,
+                self.amount * self.product_price.value *
+                new_benefit.share / share_sum)
 
 
 class Benefit(models.Model):
