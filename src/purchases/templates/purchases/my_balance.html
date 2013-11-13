@@ -30,7 +30,11 @@
   </tr>
   {% for balance in balances_me_first %}
   <tr>
-    <td> {{ balance.second_user.username }} </td>
+    <td>
+      <a href="{% url 'purchases.views.debts' balance.second_user.id %}">
+        {{ balance.second_user.username }}
+      </a>
+    </td>
     <td> {{ balance.first_owes_second }} </td>
     <td> {{ balance.second_owes_first }} </td>
     <td> {{ balance.balance_of_first }} </td>
@@ -39,7 +43,11 @@
   {% endfor %}
   {% for balance in balances_me_second %}
   <tr>
-    <td> {{ balance.first_user.username }} </td>
+    <td>
+      <a href="{% url 'purchases.views.debts' balance.first_user.id %}">
+        {{ balance.first_user.username }}
+      </a>
+    </td>
     <td> {{ balance.second_owes_first }} </td>
     <td> {{ balance.first_owes_second }} </td>
     <td> {{ balance.balance_of_second }} </td>
