@@ -2,6 +2,7 @@
 from decimal import Decimal
 
 from django.db import models
+from django.db.models.aggregates import Sum
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -38,39 +39,45 @@ class Purchase(models.Model):
 
         if self.no_debt_paid_off:
 
-            old_share_sum = Benefit.objects.filter(
-                purchase=self).aggregate(models.Sum('share'))['share__sum']
+            cost = self.amount * self.product_price.value
 
-            new_benefit = Benefit.objects.create(
-            purchase=self,
-            beneficiary=who,
-            share=Decimal(how_much))
+            for benefit in self.benefit_set.all():
 
-            share_sum = Benefit.objects.filter(
-                purchase=self).aggregate(models.Sum('share'))['share__sum']
+                balance = Balance.balance_between(
+                    self.payer, benefit.beneficiary, self.product_price.currency)
 
-            for balance, benefit in Balance.affected_by(self):
+                balance.charge(
+                    benefit.beneficiary, -benefit.debt)
 
-                if (benefit.beneficiary != who
-                and benefit.beneficiary.id != who):
+            Benefit.objects.create(
+                beneficiary=who,
+                purchase=self,
+                share=how_much)
 
-                    balance.charge(
+            share_sum = self.benefit_set.aggregate(Sum('share'))['share__sum']
+            biggest_share_benefit = self.benefit_set.order_by('-share')[0]
+            cost_left = cost
+
+            for benefit in self.benefit_set.order_by('share'):
+
+                if benefit.id == biggest_share_benefit.id:
+
+                    benefit.debt = cost_left
+
+                else:
+
+                    debt = cost * benefit.share / share_sum
+                    benefit.debt = debt
+                    cost_left -= debt
+
+                benefit.save()
+
+                balance = Balance.balance_between(
+                    self.payer,
                     benefit.beneficiary,
+                    self.product_price.currency)
 
-                        self.amount * self.product_price.value *
-                        benefit.share / share_sum -
-                        self.amount * self.product_price.value *
-                        benefit.share / old_share_sum)
-
-            Balance.balance_between(
-                self.payer,
-                who,
-                self.product_price.currency,
-            ).charge(
-                who,
-                self.amount * self.product_price.value *
-                new_benefit.share / share_sum)
-
+                balance.charge(benefit.beneficiary, benefit.debt)
 
     def settle_debt(self, benefit):
 
@@ -100,6 +107,8 @@ class Benefit(models.Model):
 
     share = models.DecimalField(
         default=1, max_digits=5, decimal_places=2)
+    debt = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2)
 
     paid_off = models.BooleanField(default=False)
 
