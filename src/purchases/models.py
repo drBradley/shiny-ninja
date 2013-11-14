@@ -83,18 +83,16 @@ class Purchase(models.Model):
 
         if not benefit.paid_off:
 
-            benefit.paid_off = True
-            benefit.save()
-
             balance = Balance.balance_between(
                 self.payer, benefit.beneficiary, benefit.purchase.product_price.currency)
 
             share_sum = Benefit.objects.filter(
                 purchase=self).aggregate(models.Sum('share'))['share__sum']
 
-            balance.charge(benefit.beneficiary,
-                           - self.amount * self.products.price_value *
-                           benefit.share / share_sum)
+            balance.charge(benefit.beneficiary, -benefit.debt)
+
+            benefit.paid_off = True
+            benefit.save()
 
             self.no_debt_paid_off = False
             self.save()
