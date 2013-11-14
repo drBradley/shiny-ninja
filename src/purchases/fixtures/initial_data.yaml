@@ -1,25 +1,31 @@
-- model: purchases.purchase
+- fields: {amount: '1', date: 2013-11-14, no_debt_paid_off: false, payer: 4, product_price: 2}
+  model: purchases.purchase
   pk: 1
-  fields:
-    amount: 1.2
-    product_price: 1
-    payer: 4
-    date: 2013-11-08 11:20:14.749302+00:00
-- model: purchases.benefit
+- fields: {beneficiary: 1, debt: '1.41', paid_off: false, purchase: 1, share: '1'}
+  model: purchases.benefit
   pk: 1
-  fields:
-    purchase: 1
-    beneficiary: 3
-    paid_off: no
-- model: purchases.benefit
+- fields: {beneficiary: 2, debt: '2.4', paid_off: true, purchase: 1, share: '1.7'}
+  model: purchases.benefit
   pk: 2
-  fields:
-    purchase: 1
-    beneficiary: 5
-    paid_off: no
-- model: purchases.benefit
+- fields: {beneficiary: 3, debt: '4.09', paid_off: false, purchase: 1, share: '2.9'}
+  model: purchases.benefit
   pk: 3
-  fields:
-    purchase: 1
-    beneficiary: 2
-    paid_off: no
+- fields: {beneficiary: 4, debt: '0.1', paid_off: false, purchase: 1, share: '0.07'}
+  model: purchases.benefit
+  pk: 4
+- fields: {currency: 1, first_owes_second: '1.41', first_user: 1, second_owes_first: '0',
+    second_user: 4}
+  model: purchases.balance
+  pk: 1
+- fields: {currency: 1, first_owes_second: '0', first_user: 2, second_owes_first: '0',
+    second_user: 4}
+  model: purchases.balance
+  pk: 2
+- fields: {currency: 1, first_owes_second: '4.09', first_user: 3, second_owes_first: '0',
+    second_user: 4}
+  model: purchases.balance
+  pk: 3
+- fields: {currency: 1, first_owes_second: '0.1', first_user: 4, second_owes_first: '0',
+    second_user: 4}
+  model: purchases.balance
+  pk: 4
