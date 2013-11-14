@@ -8,7 +8,7 @@
     * changing prices
     * charging other beneficiaries
 * calculating balance between users
-* *paying debts off*
+* paying debts off
     * disallow adding beneficiaries after any one of them has paid
 * *transaction history*
 * *financial summary*
