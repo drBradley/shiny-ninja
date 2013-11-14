@@ -15,6 +15,7 @@
   {% endfor %}
 </ul>
 
+{% if purchase.no_debt_paid_off %}
 <form action="{% url 'purchases.views.add_beneficiary' purchase.id %}" method="POST">
 
   {% csrf_token %}
@@ -38,3 +39,4 @@
   </p>
 
 </form>
+{% endif %}
