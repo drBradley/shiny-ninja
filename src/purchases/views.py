@@ -206,7 +206,7 @@ def list_purchases(request):
 
     user = request.user
 
-    purchases = Purchase.objects.filter(payer=user).order_by('date')
+    purchases = Purchase.objects.filter(payer=user).order_by('date', '-id')
 
     return render_to_response(
         'purchases/list_purchases.html',
