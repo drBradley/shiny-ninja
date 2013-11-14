@@ -1,7 +1,11 @@
-<h1> {{ purchase.product_price.product.name }} </h1>
+{% load mathfilters %}
+
+<h1> {{ purchase.amount }} of {{ purchase.product_price.product.name }} </h1>
 
 <p>
-  bought on {{ purchase.date }} at {{ purchase.product_price.shop.name }}
+  bought on {{ purchase.date }} for <em> {{ purchase.amount|mul:purchase.product_price.value }}
+    {{ purchase.product_price.currency.code }} </em>
+  at {{ purchase.product_price.shop.name }}
   by {{ purchase.payer.username }}.
 </p>
 
