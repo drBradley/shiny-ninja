@@ -1,0 +1,28 @@
+{% load mathfilters %}
+
+<h1>Your transaction history</h1>
+
+<table>
+  <tr>
+    <td> What </td>
+    <td> Where </td>
+    <td> How much </td>
+    <td> For how much </td>
+    <td> When </td>
+  </tr>
+
+  {% for purchase in purchases %}
+  <tr>
+    <td>
+      <a href="{% url 'purchases.views.show_purchase' purchase.id %}">
+        {{ purchase.product_price.product }}
+      </a>
+    </td>
+    <td> {{ purchase.product_price.shop.name }} </td>
+    <td> {{ purchase.amount }} </td>
+    <td> {{ purchase.amount|mul:purchase.product_price.value }} </td>
+    <td> {{ purchase.date }} </td>
+  </tr>
+  {% endfor %}
+
+</table>
