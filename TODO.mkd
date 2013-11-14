@@ -17,3 +17,4 @@
 
 * viewing a shop offer
 * amounts in benefits
+* display debts on purchase page
