@@ -195,3 +195,14 @@ def settle_debts(request, obligor_id):
         benefit.purchase.settle_debt(benefit)
 
     return redirect(debts, obligor_id)
+
+@login_required
+def list_purchases(request):
+
+    user = request.user
+
+    purchases = Purchase.objects.filter(payer=user).order_by('date')
+
+    return render_to_response(
+        'purchases/list_purchases.html',
+        {'purchases': purchases})
