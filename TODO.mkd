@@ -10,7 +10,7 @@
 * calculating balance between users
 * paying debts off
     * disallow adding beneficiaries after any one of them has paid
-* *transaction history*
+* transaction history
 * *allow the user to see how much he spent in a given period of time*
 
 # Extras
