@@ -3,7 +3,7 @@
 <ul>
 {% for shop in shops %}
     <li>
-        <a href="{% url 'products.views.show_shop' shop.id}">{{ shop.name }}</a>
+        <a href="{% url 'products.views.show_shop' shop.id %}">{{ shop.name }}</a>
     </li>
 {% endfor %}
 </ul>
