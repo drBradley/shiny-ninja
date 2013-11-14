@@ -11,10 +11,11 @@
 * paying debts off
     * disallow adding beneficiaries after any one of them has paid
 * *transaction history*
-* *financial summary*
+* *allow the user to see how much he spent in a given period of time*
 
 # Extras
 
-* viewing a shop offer
 * amounts in benefits
-* display debts on purchase page
+* *viewing a shop's offer*
+* *display debts on purchase page*
+* *shopping lists*
