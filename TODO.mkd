@@ -1,21 +1,22 @@
 # FIXES
 
-* enforce authentication and authorization where necessary
+* [ ]  enforce authentication and authorization where necessary
 
 # Core functionality
 
-* buying products
-    * changing prices
-    * charging other beneficiaries
-* calculating balance between users
-* paying debts off
-    * disallow adding beneficiaries after any one of them has paid
-* transaction history
-* *allow the user to see how much he spent in a given period of time*
+* [x]  buying products
+    * [x]  changing prices
+    * [x]  charging other beneficiaries
+* [x]  calculating balance between users
+* [x]  paying debts off
+    * [x]  disallow adding beneficiaries after any one of them has paid
+* [x]  transaction history
+* [ ]  allow the user to see how much he spent in a given period of time
+* [ ]  update beneficiarie's share instead of adding a new benefit
 
 # Extras
 
-* amounts in benefits
-* *viewing a shop's offer*
-* *display debts on purchase page*
-* *shopping lists*
+* [x]  amounts in benefits
+* [ ]  viewing a shop's offer
+* [ ]  display debts on purchase page
+* [ ]  shopping lists
