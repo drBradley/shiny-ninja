@@ -6,7 +6,12 @@
 
   <input type="hidden" name="shop_id" value="{{ shop.id }}" />
 
-  <p> What did you pay? </p>
+  <p> How much did you buy? </p>
+  <p>
+    <input type="text" name="purchased_amount" value="1" />
+  </p>
+
+  <p> What did you pay per unit? </p>
   <p>
     <input type="text" name="price_value" value="{{ price.value }}" />
     <select name="price_currency">

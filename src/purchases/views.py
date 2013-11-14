@@ -65,6 +65,10 @@ def handle_new_purchase(request):
         request.POST['price_value'].replace(
             ',', '.'))
 
+    amount = Decimal(
+        request.POST['purchased_amount'].replace(
+            ',', '.'))
+
     price = product.current_price(shop)
 
     if ((not price) or price.currency.id != currency.id or
@@ -77,7 +81,8 @@ def handle_new_purchase(request):
 
     purchase = Purchase.objects.create(
         product_price=price,
-        payer=request.user)
+        payer=request.user,
+        amount=amount)
 
     return redirect(show_purchase, purchase.id)
 
