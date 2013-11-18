@@ -56,21 +56,23 @@ class Purchase(models.Model):
 
             share_sum = self.benefit_set.aggregate(Sum('share'))['share__sum']
             biggest_share_benefit = self.benefit_set.order_by('-share')[0]
-            cost_left = cost
 
             for benefit in self.benefit_set.order_by('share'):
 
-                if benefit.id == biggest_share_benefit.id:
 
-                    benefit.debt = cost_left
-
-                else:
-
-                    debt = cost * benefit.share / share_sum
-                    benefit.debt = debt
-                    cost_left -= debt
+                benefit.debt = cost * benefit.share / share_sum
 
                 benefit.save()
+
+
+            debt_sum = Benefit.objects.filter(purchase=self).aggregate(Sum('debt'))['debt__sum']
+
+            rest = cost - debt_sum
+
+            biggest_share_benefit.debt = models.F('debt') + rest
+            biggest_share_benefit.save()
+
+            for benefit in self.benefit_set.all():
 
                 balance = Balance.balance_between(
                     self.payer,
