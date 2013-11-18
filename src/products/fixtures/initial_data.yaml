@@ -31,6 +31,13 @@
     code: EUR
     symbol: €
 
+- model: products.currency
+  pk: 2
+  fields:
+    name: Złoty polski
+    code: PLN
+    symbol: zł
+
 - model: products.price
   pk: 1
   fields:
