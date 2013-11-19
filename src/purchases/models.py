@@ -23,11 +23,12 @@ class Purchase(models.Model):
 
     def __unicode__(self):
 
-        return "%s bought %d %s for %s on %s" % (
+        return "%s bought %d %s for %s %s on %s" % (
             self.payer,
             self.amount,
             self.product_price.product.name,
             self.product_price.value,
+            self.product_price.currency.code,
             self.date)
 
     def benefits(self):
