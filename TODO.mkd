@@ -15,6 +15,8 @@
 * [ ]  update beneficiarie's share instead of adding a new benefit
 * [ ]  change Purchase.no_debt_paid_off into a property
 * [ ]  add fixing function
+* [ ]  add purchase removing
+    * [ ] keep track of balance
 
 # Extras
 
