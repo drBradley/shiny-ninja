@@ -13,6 +13,8 @@
 * [x]  transaction history
 * [ ]  allow the user to see how much he spent in a given period of time
 * [ ]  update beneficiarie's share instead of adding a new benefit
+* [ ]  change Purchase.no_debt_paid_off into a property
+* [ ]  add fixing function
 
 # Extras
 
