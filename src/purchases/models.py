@@ -116,10 +116,12 @@ class Benefit(models.Model):
     def __unicode__(self):
 
         return (('*unpaid* ' if not self.paid_off else '') +
-                "%s uses %s bought by %s on %s" % (
+                "%s uses %s bought by %s for %s %s on %s" % (
                     self.beneficiary,
                     self.purchase.product_price.product.name,
                     self.purchase.payer,
+                    self.purchase.product_price.value * self.purchase.amount,
+                    self.purchase.product_price.currency.code,
                     self.purchase.date))
 
 
