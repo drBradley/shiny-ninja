@@ -1,0 +1,3 @@
+# Shiny ninja!
+
+[![Build Status](https://drone.io/github.com/szabba/shiny-ninja/status.png)](https://drone.io/github.com/szabba/shiny-ninja/latest)
