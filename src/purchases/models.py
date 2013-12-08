@@ -5,6 +5,8 @@ from django.db import models
 from django.db.models.aggregates import Sum
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 from products.models import Price, Currency
 
@@ -99,6 +101,19 @@ class Purchase(models.Model):
 
             self.no_debt_paid_off = False
             self.save()
+
+@receiver(pre_delete, sender=Purchase)
+def fix_balance_on_deletion(instance, **kwargs):
+
+    purchase = instance
+    benefits = purchase.benefit_set.all()
+
+    for benefit in benefits:
+
+        balance = Balance.balance_between(purchase.payer,
+                                          benefit.beneficiary)
+        balance.charge(benefit.beneficiary, -benefit.debt)
+        benefit.delete()
 
 
 class Benefit(models.Model):
