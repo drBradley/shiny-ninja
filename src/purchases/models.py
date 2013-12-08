@@ -111,7 +111,8 @@ def fix_balance_on_deletion(instance, **kwargs):
     for benefit in benefits:
 
         balance = Balance.balance_between(purchase.payer,
-                                          benefit.beneficiary)
+                                          benefit.beneficiary,
+                                          purchase.product_price.currency)
         balance.charge(benefit.beneficiary, -benefit.debt)
         benefit.delete()
 
