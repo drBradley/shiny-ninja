@@ -43,4 +43,10 @@
   </p>
 
 </form>
+
+<p>
+  <a href="{% url 'purchases.views.delete_purchase' purchase.id %}">
+    Delete!
+  </a>
+</p>
 {% endif %}

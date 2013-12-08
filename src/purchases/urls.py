@@ -13,4 +13,5 @@ urlpatterns = patterns(
     url(r'^purchase/new/price/$', 'new_purchase_price'),
     url(r'^purchase/(\d+)/add_beneficiary/$', 'add_beneficiary'),
     url(r'^purchase/new/handle/$', 'handle_new_purchase'),
+    url(r'^purchase/(\d+)/delete/$', 'delete_purchase'),
     url(r'^debts/(\d+)/$', 'debts'))
