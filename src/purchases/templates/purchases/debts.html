@@ -1,19 +1,39 @@
-<h1> {{ obligor.username }}'s debts to you </h1>
+<html>
 
-<form action="" method="POST">
+  <head>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+  </head>
 
-  {% csrf_token %}
+  <body>
+    <h1> {{ obligor.username }}'s debts to you </h1>
 
-{% for benefit in benefits %}
-  <p>
-    <input type="checkbox" name="settled" value="{{ benefit.id }}" />
-    {{ benefit }}
-  </p>
-{% endfor %}
+    <form action="" method="POST">
 
-  <p> <input type="submit" value="Settle debts" /> </p>
-</form>
+      {% csrf_token %}
 
-<p>
-  <a href="{% url 'purchases.views.show_balances' %}"> Go back </a>
-</p>
+      {% for benefit in benefits %}
+      <p>
+        <input type="checkbox" name="settled" value="{{ benefit.id }}" />
+        {{ benefit }}
+      </p>
+      {% endfor %}
+
+      <p> <a id="check-all" href=""> Check all </a> </p>
+      <p> <input type="submit" value="Settle debts" /> </p>
+    </form>
+
+    <p>
+      <a href="{% url 'purchases.views.show_balances' %}"> Go back </a>
+    </p>
+
+    <script>
+      $(function() {
+        $("#check-all").click(function(evt) {
+           evt.preventDefault();
+           $("input[type='checkbox'][name='settled']").
+             prop("checked", true);
+         });
+      });
+    </script>
+  </body>
+</html>
